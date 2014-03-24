@@ -4,7 +4,7 @@
   <title><![CDATA[My Octopress Blog]]></title>
   <link href="http://xiao597896577.github.io/atom.xml" rel="self"/>
   <link href="http://xiao597896577.github.io/"/>
-  <updated>2014-03-24T09:40:21+08:00</updated>
+  <updated>2014-03-24T11:44:49+08:00</updated>
   <id>http://xiao597896577.github.io/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -14,22 +14,20 @@
 
   
   <entry>
+    <title type="html"><![CDATA[test]]></title>
+    <link href="http://xiao597896577.github.io/blog/2014/03/24/test/"/>
+    <updated>2014-03-24T11:44:36+08:00</updated>
+    <id>http://xiao597896577.github.io/blog/2014/03/24/test</id>
+    <content type="html"><![CDATA[
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[title]]></title>
     <link href="http://xiao597896577.github.io/blog/2014/03/24/title/"/>
     <updated>2014-03-24T09:39:46+08:00</updated>
     <id>http://xiao597896577.github.io/blog/2014/03/24/title</id>
     <content type="html"><![CDATA[<p>asabsbabsanbsvabdvb</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[test]]></title>
-    <link href="http://xiao597896577.github.io/blog/2014/03/24/test/"/>
-    <updated>2014-03-24T09:26:30+08:00</updated>
-    <id>http://xiao597896577.github.io/blog/2014/03/24/test</id>
-    <content type="html"><![CDATA[<h2>test</h2>
-
-<p>it is for the test .</p>
 ]]></content>
   </entry>
   
