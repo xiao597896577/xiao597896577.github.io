@@ -1,0 +1,10 @@
+---
+layout: post
+title: "test"
+date: 2014-03-24 09:26:30 +0800
+comments: true
+categories: 
+---
+##test##
+
+it is for the test .
