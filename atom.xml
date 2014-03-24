@@ -4,7 +4,7 @@
   <title><![CDATA[My Octopress Blog]]></title>
   <link href="http://xiao597896577.github.io/atom.xml" rel="self"/>
   <link href="http://xiao597896577.github.io/"/>
-  <updated>2014-03-24T11:44:49+08:00</updated>
+  <updated>2014-03-24T15:54:44+08:00</updated>
   <id>http://xiao597896577.github.io/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -12,6 +12,134 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[UVA 624 - CD]]></title>
+    <link href="http://xiao597896577.github.io/blog/2014/03/24/uva-624-cd/"/>
+    <updated>2014-03-24T15:17:03+08:00</updated>
+    <id>http://xiao597896577.github.io/blog/2014/03/24/uva-624-cd</id>
+    <content type="html"><![CDATA[<h1>UVA 624 &ndash; CD 解题报告</h1>
+
+<h2>1.原题:</h2>
+
+<p>You have a long drive by car ahead. You have a tape recorder, but unfortunately your best music is on CDs. You need to have it on tapes so the problem to solve is: you have a tape N minutes long. How to choose tracks from CD to get most out of tape space and have as short unused space as possible.</p>
+
+<p>Assumptions:</p>
+
+<p>number of tracks on the CD. does not exceed 20
+no track is longer than N minutes
+tracks do not repeat
+length of each track is expressed as an integer number
+N is also integer
+Program should find the set of tracks which fills the tape best and print it in the same sequence as the tracks are stored on the CD</p>
+
+<p><strong>Input</strong></p>
+
+<p>Any number of lines. Each one contains value N, (after space) number of tracks and durations of the tracks. For example from first line in sample data: N=5, number of tracks=3, first track lasts for 1 minute, second one 3 minutes, next one 4 minutes</p>
+
+<p><strong>Output</strong></p>
+
+<p>Set of tracks (and durations) which are the correct solutions and string &#8220;sum:&ldquo; and sum of duration times.</p>
+
+<p><strong>Sample Input</strong></p>
+
+<p>5 3 1 3 4<br>
+10 4 9 8 4 2<br>
+20 4 10 5 7 4<br>
+90 8 10 23 1 2 3 4 5 7<br>
+45 8 4 10 44 43 12 9 8 2</p>
+
+<p><strong>Sample Output</strong></p>
+
+<p>1 4 sum:5<br>
+8 2 sum:10<br>
+10 5 4 sum:19<br>
+10 23 1 2 3 4 5 7 sum:55<br>
+4 10 12 9 8 2 sum:45<br></p>
+
+<h2>2.中文大意</h2>
+
+<p>就是给定规定的时间N，然后给M个磁带，每个磁带的时间都告诉你了，然后求不大于时间N的总时间是多少，将其序列和最接近N的总时间输出</p>
+
+<h2>3.思路</h2>
+
+<p>思路很简单了，就是用一个vis的数组先进行暴力枚举，将所有的时间和求出，然后每次算时间的时候，与N进行比较，再用一个int来存储与N的距离，即N-Sum，然后每次都进行判断，看是否小于N-Sum，这样就可以求出来了</p>
+
+<h2>4.代码</h2>
+
+<pre>
+<code>
+include'iostream'
+include'cstring'
+using namespace std;
+
+int sum = 0;
+int tapeNum = 0;
+int numList[200];
+int vis[200];
+int resultSet[200];
+bool qq = false;
+int dis = 100000;
+int nn = 0;
+
+void checkSum(int index){
+    int op = 0;
+    for (int i = 0;i <= index;i++){
+        if(vis[i])
+            op += numList[i];
+    }
+    if(sum >= op) {
+        if(sum - op < dis){
+            if(sum - op == 0) qq = true;
+            int pp = 0;
+            dis = sum - op;
+            for (int i = 0;i<=index;i++) {
+                if(vis[i])
+                    resultSet[pp++] = numList[i];
+            }
+            nn = pp;
+        }
+    }
+}
+
+void getResult(int index){
+    if(qq || index == tapeNum) return ;
+    vis[index] = 1;
+    checkSum(index);
+    getResult(index+1);
+    vis[index] = 0;
+    checkSum(index);
+    getResult(index+1);
+}
+
+</code>
+</pre>
+
+
+<p><code>
+int main(){</p>
+
+<pre><code>while(cin&gt;&gt;sum&gt;&gt;tapeNum) {
+    memset(numList,0,sizeof(numList));
+    memset(vis,0,sizeof(vis));
+    memset(resultSet,0,sizeof(resultSet));
+    qq = false;
+    nn = 0;
+    dis = 100000;
+    for (int i = 0 ;i &lt; tapeNum ;i ++) cin &gt;&gt; numList[i];
+    getResult(0);
+    for (int i = 0;i &lt; nn;i++) {
+        cout&lt;&lt;resultSet[i]&lt;&lt;" ";
+    }
+    cout&lt;&lt;"sum:"&lt;&lt;sum - dis&lt;&lt;endl;
+}
+return 0;
+</code></pre>
+
+<p>}
+</code></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[test]]></title>
