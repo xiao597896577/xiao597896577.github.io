@@ -1,0 +1,330 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>POJ 1753 Flip Game - My Octopress Blog</title>
+  <meta name="author" content="Your Name">
+
+  
+  <meta name="description" content="POJ 1753-Flip Game 1.原题 Description Flip game is played on a rectangular 4x4 field with two-sided pieces placed on each of its 16 squares. One side &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://xiao597896577.github.io/blog/2014/03/25/poj-1753-flip-game">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="header-inner">
+    <span class="first"><a href="/">My Octopress Blog</a></span>
+    <span><a href="/about">about</a></span>
+    <span><a href="http://www.github.com/">projects</a></span>
+    <span class="last"><a href="/atom.xml" title="subscribe via RSS">rss</a></span>
+  </div>
+</hgroup>
+
+</header>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">POJ 1753 Flip Game</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-25T11:28:42+08:00" pubdate data-updated="true">Mar 25<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h1>POJ 1753-Flip Game</h1>
+
+<h2>1.原题</h2>
+
+<p><strong>Description</strong></p>
+
+<p>Flip game is played on a rectangular 4x4 field with two-sided pieces placed on each of its 16 squares. One side of each piece is white and the other one is black and each piece is lying either it&rsquo;s black or white side up. Each round you flip 3 to 5 pieces, thus changing the color of their upper side from black to white and vice versa. The pieces to be flipped are chosen every round according to the following rules: <br>
+ 1.Choose any one of the 16 pieces. <br>
+ 2.Flip the chosen piece and also all adjacent pieces to the left, to the right, to the top, and to the bottom of the chosen piece (if there are any).</p>
+
+<p>Consider the following position as an example:</p>
+
+<p>bwbw <br>
+wwww <br>
+bbwb <br>
+bwwb</p>
+
+<p>Here &ldquo;b&rdquo; denotes pieces lying their black side up and &ldquo;w&rdquo; denotes pieces lying their white side up. If we choose to flip the 1st piece from the 3rd row (this choice is shown at the picture), then the field will become:</p>
+
+<p>bwbw <br>
+bwww <br>
+wwwb <br>
+wwwb <br></p>
+
+<p>The goal of the game is to flip either all pieces white side up or all pieces black side up. You are to write a program that will search for the minimum number of rounds needed to achieve this goal.</p>
+
+<p><strong>Input</strong></p>
+
+<p>The input consists of 4 lines with 4 characters &ldquo;w&rdquo; or &ldquo;b&rdquo; each that denote game field position.</p>
+
+<p><strong>Output</strong></p>
+
+<p>Write to the output file a single integer number &ndash; the minimum number of rounds needed to achieve the goal of the game from the given position. If the goal is initially achieved, then write 0. If it&rsquo;s impossible to achieve the goal, then write the word &ldquo;Impossible&rdquo; (without quotes).</p>
+
+<p><strong>Sample Input</strong></p>
+
+<p>bwwb<br>
+bbwb<br>
+bwwb<br>
+bwww<br></p>
+
+<p><strong>Sample Output</strong></p>
+
+<p>4</p>
+
+<p><strong>Flip Game Image</strong></p>
+
+<p><img src="http://poj.org/images/1753_1.jpg" alt="Flip Game Demo" /></p>
+
+<h2>2.题意</h2>
+
+<p>就是说选择4×4表格中的任意一个位置，然后这个位置和它的上下左右的位置都会转换颜色，然后就是问你怎样才能让整个4×4方格全是一种颜色，求一个最小的步数，不存在的话输出“Impossible”</p>
+
+<h2>3.我的思路</h2>
+
+<p>暴力求解，对步数进行限制，然后判定1步能否实现，然后判断2步能否实现，一直到判断出结果，但是这样的话其实只实现了0-5步是比较快的，但是6步以后就会运行时间增加很多，所以我的思路还是不正确的，但是还是贴下我的代码吧</p>
+
+<h2>4.我的代码（只能实现5步以内比较快）</h2>
+
+<pre>
+  <code>
+#include<iostream>
+
+using namespace std;
+
+typedef char State[4][4];
+
+State state;
+
+bool check(){
+    char start = state[0][0];
+    for (int i = 0;i<4;i++) 
+        for (int j = 0;j<4;j++){
+            if(state[i][j] != start) return false;  
+        }
+        return true;
+}
+
+char change(char p){
+    if(p == 'b') return 'w';
+    return 'b';
+}
+
+void changeColor(int i,int j){
+    if(i - 1 >= 0) state[i-1][j] = change(state[i-1][j]);
+    if(i + 1 < 4) state[i+1][j] = change(state[i+1][j]);
+    if(j + 1 < 4) state[i][j+1] = change(state[i][j+1]);
+    if(j - 1 >=0 ) state[i][j-1] = change(state[i][j-1]);
+    state[i][j] = change(state[i][j]);
+}
+
+
+bool searchP(int step){
+
+    if(step == 0) return false;
+
+    for (int i = 0;i<4;i++) {
+        for (int j = 0;j<4;j++) {
+            changeColor(i,j);
+            //printP();
+            if(check()) return true;
+            if(searchP(step-1)) return true;
+            else 
+                changeColor(i,j);
+
+        }
+    }
+    return false;
+}
+
+int main(){
+
+    while(true) {
+        for (int i = 0;i<4;i++)     
+            for (int j = 0;j<4;j++) cin>>state[i][j];
+        if(check()) {
+            cout&lt;&lt;"0"&lt;&lt;endl;
+            continue;
+        }
+        int i = 0;
+        while(++i){
+            if(searchP(i)) break;
+        }
+        cout&lt;&lt;i&lt;&lt;endl;
+    }
+
+    return 0;
+}
+  </code>
+</pre>
+
+
+<h2>5.思路（正解）</h2>
+
+<p>我的方法之所以到后来速度很慢，是因为重复计算太多次了，正解应该是用一个VECTOR来保存状态，然后声明一个结构体，包含状态（即数组的状况）和已经走的步数，然后对这个栈进行维护，对栈中每一个元素进行广度遍历，再PUSH到VECTOR中，在建立一个vis的表，对已经运行过的VECTOR中的元素，不将其push进VECTOR中去，这样的话，如果存在的话，到时可以根据结构体中的步数来输出，如果到时VECTOR为空的话，就可以跳出，然后输出“Impossible”。</p>
+
+<h2>6.代码（正确）</h2>
+
+<pre>
+   <code>
+      待更新中......
+   </code>
+</pre>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Your Name</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-25T11:28:42+08:00" pubdate data-updated="true">Mar 25<span>th</span>, 2014</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://xiao597896577.github.io/blog/2014/03/25/poj-1753-flip-game/" data-via="" data-counturl="http://xiao597896577.github.io/blog/2014/03/25/poj-1753-flip-game/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/03/25/poj-1001-exponentiation/" title="Previous Post: POJ 1001-Exponentiation">&laquo; POJ 1001-Exponentiation</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/poj-1753-flip-game/">POJ 1753 Flip Game</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/poj-1001-exponentiation/">POJ 1001-Exponentiation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/24/uva-624-cd/">UVA 624 - CD</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Your Name -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
