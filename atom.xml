@@ -4,7 +4,7 @@
   <title><![CDATA[My Octopress Blog]]></title>
   <link href="http://xiao597896577.github.io/atom.xml" rel="self"/>
   <link href="http://xiao597896577.github.io/"/>
-  <updated>2014-03-25T11:54:35+08:00</updated>
+  <updated>2014-03-25T16:43:28+08:00</updated>
   <id>http://xiao597896577.github.io/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -150,16 +150,134 @@ int main(){
 </pre>
 
 
-<h2>5.思路（正解）</h2>
+<h2>5.思路（正解？）</h2>
 
 <p>我的方法之所以到后来速度很慢，是因为重复计算太多次了，正解应该是用一个VECTOR来保存状态，然后声明一个结构体，包含状态（即数组的状况）和已经走的步数，然后对这个栈进行维护，对栈中每一个元素进行广度遍历，再PUSH到VECTOR中，在建立一个vis的表，对已经运行过的VECTOR中的元素，不将其push进VECTOR中去，这样的话，如果存在的话，到时可以根据结构体中的步数来输出，如果到时VECTOR为空的话，就可以跳出，然后输出“Impossible”。</p>
 
-<h2>6.代码（正确）</h2>
+<p>好的吧，只能说下面的代码可以保证我的输出肯定正确，但是运行时间呢，更慢了，要输出个Impossible的话，估计得刷个人人的时间了，很难忍受的，输出4以上的就会很慢了，主要是每次都要对string进行大量操作。弄得我都没有勇气提交POJ了</p>
+
+<h2>6.代码（正确？）</h2>
 
 <pre>
    <code>
-      待更新中......
+#include&lt;iostream>
+#include&lt;queue>
+#include&lt;cstring>
+#include&lt;string>
+#include&lt;string.h>
+
+using namespace std;
+
+struct State
+{
+    string board;
+    int step;
+};
+
+queue<State> vS;
+string visList[1000000];
+int pp = 0;
+
+bool check(State s){
+    string str = s.board;
+    const char* ch = str.c_str();
+    char start = ch[0];
+    for (int i = 0;i<4;i++) {
+        for (int j=0;j<4;j++) {
+            if(start != ch[i*4+j]) return false;
+        }
+    }
+    return true;
+}
+
+char change(char s){
+    if(s == 'b') return 'w';
+    return 'b';
+}
+
+bool isVis(string s){
+    for (int i = 0;i<pp;i++) {
+        if(strcmp(visList[i].c_str(),s.c_str())==0){
+            return true;
+        }
+    }
+    return false;
+}
+
+string changeColor(string ss, int x,int y) {
+    char ch[20];
+    const char* s = ss.c_str();
+    strcpy(ch,ss.c_str());
+    if(y - 1 >= 0) ch[x*4+y-1] = change(s[x*4+y-1]);
+    if(y + 1 < 4) ch[x*4+y+1] = change(s[x*4+y+1]);
+    if(x + 1 < 4) ch[(x+1)*4+y] = change(s[(x+1)*4+y]);
+    if(x - 1 >= 0) ch[(x-1)*4+y] = change(s[(x-1)*4+y]);
+    ch[x*4+y] = change(s[x*4+y]);
+    string sss;
+    sss.insert(0,ch);
+    return sss;
+}
+
+void getResult(){
+    State ss;
+    bool op = false;
+    while(!vS.empty()){
+        ss = vS.front();
+        if(check(ss)){
+            op = true;
+            break;
+        }
+        vS.pop();
+        for (int i=0;i<4;i++) {
+            for (int j=0;j<4;j++) {
+                string s = changeColor(ss.board,i,j);
+                if(isVis(s)) continue;
+                int step = ss.step + 1;
+                State ps;
+                ps.board = s;
+                ps.step = step;
+                vS.push(ps);
+                visList[pp++] = s;
+            }
+        }
+    }
+    if(op) cout&lt;&lt;ss.step&lt;&lt;endl;
+    else cout&lt;&lt;"Impossible"&lt;&lt;endl;
+}
+
+int main(){
+
+    while(true){
+        State startS;
+        while(!vS.empty()) vS.pop();
+        string input;
+        pp = 0;
+        memset(visList,0,sizeof(0));
+        for (int i = 0;i<4;i++) {
+            cin>>input;
+            startS.board.append(input);
+        }
+        visList[pp++] = input; 
+        startS.step = 0;
+        vS.push(startS);
+        getResult();
+    }
+    return 0;
+}
    </code>
+</pre>
+
+
+<h2>7.思路（正解）</h2>
+
+<p>这回肯定是正确的思路了，之前的思路其实也没错，重要是这里还要用一种叫“位运算”的方式来保存状态，这样可以更快的判断是否访问过，修改状态，很多都很方便，而且速度快。</p>
+
+<h2>8.代码（正解）</h2>
+
+<pre>
+  <code>
+     待更新中.......
+  </code>
 </pre>
 
 ]]></content>
