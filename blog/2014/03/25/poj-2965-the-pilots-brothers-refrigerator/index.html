@@ -1,0 +1,338 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>POJ 2965 The Pilots Brothers' refrigerator - My Octopress Blog</title>
+  <meta name="author" content="Your Name">
+
+  
+  <meta name="description" content="POJ 2965 The Pilots Brothers&#8217; Refrigerator 1.原题 Description The game “The Pilots Brothers: following the stripy elephant” has a quest where a &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://xiao597896577.github.io/blog/2014/03/25/poj-2965-the-pilots-brothers-refrigerator">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="header-inner">
+    <span class="first"><a href="/">My Octopress Blog</a></span>
+    <span><a href="/about">about</a></span>
+    <span><a href="http://www.github.com/">projects</a></span>
+    <span class="last"><a href="/atom.xml" title="subscribe via RSS">rss</a></span>
+  </div>
+</hgroup>
+
+</header>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">POJ 2965 the Pilots Brothers' Refrigerator</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-25T22:37:04+08:00" pubdate data-updated="true">Mar 25<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h1>POJ 2965 The Pilots Brothers&#8217; Refrigerator</h1>
+
+<h2>1.原题</h2>
+
+<p><strong>Description</strong></p>
+
+<p>The game “The Pilots Brothers: following the stripy elephant” has a quest where a player needs to open a refrigerator.</p>
+
+<p>There are 16 handles on the refrigerator door. Every handle can be in one of two states: open or closed. The refrigerator is open only when all handles are open. The handles are represented as a matrix 4х4. You can change the state of a handle in any location [i, j] (1 ≤ i, j ≤ 4). However, this also changes states of all handles in row i and all handles in column j.</p>
+
+<p>The task is to determine the minimum number of handle switching necessary to open the refrigerator.</p>
+
+<p><strong>Input</strong></p>
+
+<p>The input contains four lines. Each of the four lines contains four characters describing the initial state of appropriate handles. A symbol “+” means that the handle is in closed state, whereas the symbol “−” means “open”. At least one of the handles is initially closed.</p>
+
+<p><strong>Output</strong></p>
+
+<p>The first line of the input contains N – the minimum number of switching. The rest N lines describe switching sequence. Each of the lines contains a row number and a column number of the matrix separated by one or more spaces. If there are several solutions, you may give any one of them.</p>
+
+<p><strong>Sample Input</strong><br>
+-+&#8211;<br>
+&#8212;-<br>
+&#8212;-<br>
+-+&#8211;</p>
+
+<p><strong>Sample Output</strong></p>
+
+<p>6<br>
+1 1<br>
+1 3<br>
+1 4<br>
+4 1<br>
+4 3<br>
+4 4</p>
+
+<h2>2.题意</h2>
+
+<p>题目意思就是有一个4×4的方格，然后是要你从里面任意选择出一个格子，然后它自己，以及它所在行，它所在列的所有的位置都变成相反的，比如‘+’变成‘-’，‘-’变成‘+’，然后问你，最少选多少次格子，可以让所有格子都变成‘-’</p>
+
+<h2>3.思路</h2>
+
+<p>思路的话，很简单了，此题和上面的POJ1753是一个类型的，基本就是照办，就是位运算+队列的压缩存储状态,这里面多了一个，就是要输出每一步，这样的话，就用了数组来存储每次保存的状态，然后递归来输出结果</p>
+
+<h2>4.代码</h2>
+
+<pre>
+  <code>
+#include&lt;iostream>
+#include&lt;queue>
+#include&lt;cstring>
+#include&lt;string>
+#include&lt;string.h>
+#define M 65535
+
+using namespace std;
+
+struct state
+{
+    int data;
+    int step;
+    int pre;
+    int pos;
+};
+
+int dir[16] = {4383,8751,17487,34959,4593,8946,17652,35064,7953,12066,20292,36744,61713,61986,62532,63624};
+queue<state> sList;
+int visList[M+1];
+
+state ssList[(1<<16) +1];
+
+void printP(state s) {
+    if(s.pre != -1){
+        printP(ssList[s.pre]);
+        cout&lt;&lt; s.pos / 4 + 1&lt;&lt;" "&lt;&lt;s.pos % 4 + 1&lt;&lt;endl;
+    }
+}
+
+void getResult(){
+
+    state ss;
+    bool op = false;
+    while(!sList.empty()){
+
+        ss = sList.front();
+        sList.pop();
+
+        if(ss.data == M) {
+            cout&lt;&lt;ss.step&lt;&lt;&lt;endl;
+            printP(ss);
+            break;
+        }
+
+        for (int i = 0; i<16;i++) {
+            int temp = ss.data ^ dir[15-i];
+            if(visList[temp]) continue;
+            state sss;
+            sss.data = temp;
+            sss.step = ss.step + 1;
+            sss.pre = ss.data;
+            sss.pos = i;
+            ssList[sss.data] = sss;
+            visList[temp] = 1;
+            sList.push(sss);
+        }
+
+    }
+}
+
+int main(){
+    while(!sList.empty()) sList.pop();
+    memset(visList,0,sizeof(visList));
+    memset(ssList,0,sizeof(ssList));
+    state start;
+    int data = 0;
+    string s;
+    for (int i = 0; i < 4; i++) {
+        cin>>s;
+        const char* map = s.c_str();
+        for (int j=0;j<4;j++) {
+            if(map[j] == '-')
+                data = (data << 1) + 1;
+            else 
+                data = (data << 1);
+        }
+    }
+    visList[data] = 1;
+    start.data = data;
+    start.step = 0;
+    start.pre = -1;
+    sList.push(start);
+    ssList[data] = start;
+    getResult();
+
+    return 0;
+}
+
+  </code>
+</pre>
+
+
+<h2>5.后续</h2>
+
+<p>1）其实这道题先开始是TLE的，主要是因为先开始我维护的是一张string的路径，即存储在struct里面的，每次都进行添加每次的行走的路线，不知道是因为string的操作运行时间太长还是其他什么原因，就是会TLE，而且在cmd中显示还会卡壳的。后来用数字的话，速度就快多了。这个还要再看一下。</p>
+
+<p>2）就是这个题先开始用c++的编译器的时候，会报TLE的，但是后来我改成G++的编译器后，就没有TLE了，直接AC。这个原因也要再查一下</p>
+
+<p>3）吐槽一下，这道题花了一个晚上，感觉有点坑爹，但是是自己的第二道位运算，现在感觉位运算了解一些了吧。</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Your Name</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-25T22:37:04+08:00" pubdate data-updated="true">Mar 25<span>th</span>, 2014</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://xiao597896577.github.io/blog/2014/03/25/poj-2965-the-pilots-brothers-refrigerator/" data-via="" data-counturl="http://xiao597896577.github.io/blog/2014/03/25/poj-2965-the-pilots-brothers-refrigerator/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/03/25/poj-1753-flip-game/" title="Previous Post: POJ 1753 Flip Game">&laquo; POJ 1753 Flip Game</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/poj-2965-the-pilots-brothers-refrigerator/">POJ 2965 the Pilots Brothers' Refrigerator</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/poj-1753-flip-game/">POJ 1753 Flip Game</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/poj-1001-exponentiation/">POJ 1001-Exponentiation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/24/uva-624-cd/">UVA 624 - CD</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Your Name -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
