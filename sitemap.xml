@@ -1,16 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
-        <loc>http://xiao597896577.github.io/blog/2014/03/24/title/</loc>
-        <lastmod>2014-03-24T09:40:03+08:00</lastmod>
-    </url>
-    <url>
-        <loc>http://xiao597896577.github.io/blog/2014/03/24/test/</loc>
-        <lastmod>2014-03-24T11:44:36+08:00</lastmod>
-    </url>
-    <url>
         <loc>http://xiao597896577.github.io/blog/2014/03/24/uva-624-cd/</loc>
-        <lastmod>2014-03-24T15:49:53+08:00</lastmod>
+        <lastmod>2014-03-25T09:02:19+08:00</lastmod>
     </url>
     <url>
         <loc>http://xiao597896577.github.io/about/</loc>
@@ -18,7 +10,7 @@
     </url>
     <url>
         <loc>http://xiao597896577.github.io/</loc>
-        <lastmod>2014-03-24T15:49:53+08:00</lastmod>
+        <lastmod>2014-03-25T09:02:19+08:00</lastmod>
     </url>
     <url>
         <loc>http://xiao597896577.github.io/robots.txt</loc>

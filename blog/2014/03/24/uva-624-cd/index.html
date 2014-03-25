@@ -126,8 +126,8 @@ Program should find the set of tracks which fills the tape best and print it in 
 
 <pre>
 <code>
-include'iostream'
-include'cstring'
+include&lt;iostream>
+include&lt;cstring>
 using namespace std;
 
 int sum = 0;
@@ -169,32 +169,29 @@ void getResult(int index){
     getResult(index+1);
 }
 
+int main(){
+
+    while(cin>>sum>>tapeNum) {
+        memset(numList,0,sizeof(numList));
+        memset(vis,0,sizeof(vis));
+        memset(resultSet,0,sizeof(resultSet));
+        qq = false;
+        nn = 0;
+        dis = 100000;
+        for (int i = 0 ;i < tapeNum ;i ++) cin >> numList[i];
+        getResult(0);
+        for (int i = 0;i < nn;i++) {
+            cout&lt;&lt;resultSet[i]&lt;&lt;" ";
+        }
+        cout&lt;&lt;"sum:"&lt;&lt;sum - dis&lt;&lt;endl;
+    }
+    return 0;
+}
 </code>
 </pre>
 
 
-<p><code>
-int main(){</p>
 
-<pre><code>while(cin&gt;&gt;sum&gt;&gt;tapeNum) {
-    memset(numList,0,sizeof(numList));
-    memset(vis,0,sizeof(vis));
-    memset(resultSet,0,sizeof(resultSet));
-    qq = false;
-    nn = 0;
-    dis = 100000;
-    for (int i = 0 ;i &lt; tapeNum ;i ++) cin &gt;&gt; numList[i];
-    getResult(0);
-    for (int i = 0;i &lt; nn;i++) {
-        cout&lt;&lt;resultSet[i]&lt;&lt;" ";
-    }
-    cout&lt;&lt;"sum:"&lt;&lt;sum - dis&lt;&lt;endl;
-}
-return 0;
-</code></pre>
-
-<p>}
-</code></p>
 </div>
 
 
@@ -234,8 +231,6 @@ return 0;
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2014/03/24/test/" title="Previous Post: test">&laquo; test</a>
-      
       
     </p>
   </footer>
@@ -251,14 +246,6 @@ return 0;
     
       <li class="post">
         <a href="/blog/2014/03/24/uva-624-cd/">UVA 624 - CD</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/03/24/test/">Test</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2014/03/24/title/">Title</a>
       </li>
     
   </ul>

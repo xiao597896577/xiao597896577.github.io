@@ -4,7 +4,7 @@
   <title><![CDATA[My Octopress Blog]]></title>
   <link href="http://xiao597896577.github.io/atom.xml" rel="self"/>
   <link href="http://xiao597896577.github.io/"/>
-  <updated>2014-03-25T00:48:42+08:00</updated>
+  <updated>2014-03-25T09:03:24+08:00</updated>
   <id>http://xiao597896577.github.io/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -69,8 +69,8 @@ Program should find the set of tracks which fills the tape best and print it in 
 
 <pre>
 <code>
-include'iostream'
-include'cstring'
+include&lt;iostream>
+include&lt;cstring>
 using namespace std;
 
 int sum = 0;
@@ -112,50 +112,29 @@ void getResult(int index){
     getResult(index+1);
 }
 
+int main(){
+
+    while(cin>>sum>>tapeNum) {
+        memset(numList,0,sizeof(numList));
+        memset(vis,0,sizeof(vis));
+        memset(resultSet,0,sizeof(resultSet));
+        qq = false;
+        nn = 0;
+        dis = 100000;
+        for (int i = 0 ;i < tapeNum ;i ++) cin >> numList[i];
+        getResult(0);
+        for (int i = 0;i < nn;i++) {
+            cout&lt;&lt;resultSet[i]&lt;&lt;" ";
+        }
+        cout&lt;&lt;"sum:"&lt;&lt;sum - dis&lt;&lt;endl;
+    }
+    return 0;
+}
 </code>
 </pre>
 
 
-<p><code>
-int main(){</p>
 
-<pre><code>while(cin&gt;&gt;sum&gt;&gt;tapeNum) {
-    memset(numList,0,sizeof(numList));
-    memset(vis,0,sizeof(vis));
-    memset(resultSet,0,sizeof(resultSet));
-    qq = false;
-    nn = 0;
-    dis = 100000;
-    for (int i = 0 ;i &lt; tapeNum ;i ++) cin &gt;&gt; numList[i];
-    getResult(0);
-    for (int i = 0;i &lt; nn;i++) {
-        cout&lt;&lt;resultSet[i]&lt;&lt;" ";
-    }
-    cout&lt;&lt;"sum:"&lt;&lt;sum - dis&lt;&lt;endl;
-}
-return 0;
-</code></pre>
-
-<p>}
-</code></p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[test]]></title>
-    <link href="http://xiao597896577.github.io/blog/2014/03/24/test/"/>
-    <updated>2014-03-24T11:44:36+08:00</updated>
-    <id>http://xiao597896577.github.io/blog/2014/03/24/test</id>
-    <content type="html"><![CDATA[
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[title]]></title>
-    <link href="http://xiao597896577.github.io/blog/2014/03/24/title/"/>
-    <updated>2014-03-24T09:39:46+08:00</updated>
-    <id>http://xiao597896577.github.io/blog/2014/03/24/title</id>
-    <content type="html"><![CDATA[<p>asabsbabsanbsvabdvb</p>
 ]]></content>
   </entry>
   
