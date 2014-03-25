@@ -329,11 +329,88 @@ int main(){
 
 <p>这回肯定是正确的思路了，之前的思路其实也没错，重要是这里还要用一种叫“位运算”的方式来保存状态，这样可以更快的判断是否访问过，修改状态，很多都很方便，而且速度快。</p>
 
-<h2>8.代码（正解）</h2>
+<h2>8.代码（正解AC代码）</h2>
 
 <pre>
   <code>
-     待更新中.......
+#include&lt;iostream>
+#include&lt;queue>
+#define M 65535
+#define N 0
+
+using namespace std;
+
+struct state
+{
+    int data;
+    int step;
+};
+
+char map[4][4];
+int vis[65536];
+queue<state> sQ;
+
+int bfs(int data) {
+    int i = 0;
+    state l;
+    state p;
+    l.data = data;
+    l.step = 0;
+    sQ.push(l);
+    vis[data] = 1;
+    while(!sQ.empty()) {
+        p = sQ.front();
+        sQ.pop();
+        if(p.data == M || p.data == N) return p.step;
+        else{
+            for (int i=0;i<16;i++) {
+                int elem = p.data;
+                elem = elem ^ (1 << i);
+                if(i > 3)
+                    elem = elem^(1 << (i - 4));
+                if(i < 12)
+                    elem = elem^(1 << (i + 4));
+                if(i % 4 != 0)
+                    elem = elem^(1 << (i - 1));
+                if(i % 4 != 3)
+                    elem = elem^(1 << (i + 1));
+                state q;
+                q.data = elem;
+                q.step = p.step + 1;
+                if(!vis[elem]){
+                    vis[elem] = 1;
+                    sQ.push(q);
+                }
+            }
+        }
+    }
+    while(!sQ.empty())
+        sQ.pop();
+    return -1;
+}
+
+int main(){
+
+    int i=0;
+    int j=0;
+    int data=0;
+    int step=0;
+
+    for (int i = 0;i < 4;i++) {
+        gets(map[i]);
+        for (int j=0;j<4;j++) {
+            if(map[i][j] == 'b')
+                data = (data << 1) + 1;
+            else 
+                data = data << 1;
+        }
+    }
+    memset(vis,0,sizeof(vis));
+    step = bfs(data);
+    if(step == -1) cout&lt;&lt;"Impossible"&lt;&lt;endl;
+    else cout&lt;&lt;step&lt;&lt;endl;
+    return 0;
+}
   </code>
 </pre>
 
