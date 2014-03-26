@@ -1,0 +1,326 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>POJ 2109 Power of Cryptography - My Octopress Blog</title>
+  <meta name="author" content="Your Name">
+
+  
+  <meta name="description" content="1.原题 Description Current work in cryptography involves (among other things) large prime numbers and computing powers of numbers among these primes. &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://xiao597896577.github.io/blog/2014/03/26/poj-2109-power-of-cryptography">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="header-inner">
+    <span class="first"><a href="/">My Octopress Blog</a></span>
+    <span><a href="/about">about</a></span>
+    <span><a href="http://www.github.com/">projects</a></span>
+    <span class="last"><a href="/atom.xml" title="subscribe via RSS">rss</a></span>
+  </div>
+</hgroup>
+
+</header>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">POJ 2109 Power of Cryptography</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-26T19:11:08+08:00" pubdate data-updated="true">Mar 26<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2>1.原题</h2>
+
+<p><strong>Description</strong></p>
+
+<p>Current work in cryptography involves (among other things) large prime numbers and computing powers of numbers among these primes. Work in this area has resulted in the practical use of results from number theory and other branches of mathematics once considered to be only of theoretical interest.
+This problem involves the efficient computation of integer roots of numbers.
+Given an integer n>=1 and an integer p>= 1 you have to write a program that determines the n th positive root of p. In this problem, given such integers n and p, p will always be of the form k to the nth. power, for an integer k (this integer is what your program must find).</p>
+
+<p><strong>Input</strong></p>
+
+<p>The input consists of a sequence of integer pairs n and p with each integer on a line by itself. For all such pairs 1&lt;=n&lt;= 200, 1&lt;=p&lt;10<sup>101</sup> and there exists an integer k, 1&lt;=k&lt;=10<sup>9</sup> such that k<sup>n</sup> = p.</p>
+
+<br>
+
+
+<p><strong>Output</strong></p>
+
+<p>For each integer pair n and p the value k should be printed, i.e., the number k such that k n =p.</p>
+
+<p><strong>Sample Input</strong></p>
+
+<p>2 16<br>
+3 27<br>
+7 4357186184021382204544</p>
+
+<p><strong>Sample Output</strong></p>
+
+<p>4<br>
+3<br>
+1234<br></p>
+
+<h2>2.题意</h2>
+
+<p>简单来说，题意就是说给你M和N，然后要你求出K，使得K的M次方等于N</p>
+
+<h2>3.思路</h2>
+
+<p>由于结果的范围已经限制，是在1-10的9次方之间，很明显应该是用二分法来解决了，然后剩下的工作就是大数据的运算了，代码的话，我是从网上找的，思路的话，和我的思路基本一致</p>
+
+<h2>4.代码</h2>
+
+<pre>
+ <code>
+
+#include &lt;iostream>
+#include &lt;string.h>
+
+using namespace std;
+
+void swap_str(char str[]) {
+    int len = strlen(str);
+    for (int i=0; i&lt;len/2; i++) {
+        int tmp = str[i];
+        str[i] = str[len-i-1];
+        str[len-i-1] = tmp;
+    }
+}
+
+void my_mul(char str[], int x) {
+    int len = strlen(str);
+    int cp = 0, i, tmp;
+    swap_str(str);
+
+    for (i=0; i&lt;len; i++) {
+        tmp = (str[i]-'0')*x + cp;
+        str[i] = (tmp%10) + '0';
+        cp = tmp / 10;
+    }
+
+    while (cp) {
+        str[i++] = (cp%10) + '0';
+        cp /= 10;
+    }
+
+    while ('0'==str[i-1] && i>1)
+        i--;
+    str[i] = '\0';
+
+    swap_str(str);
+}
+
+int my_numCmp(char str1[], char str2[]) {
+    int len1, len2;
+    len1 = strlen(str1);
+    len2 = strlen(str2);
+
+    if (len1 > len2)
+        return 1;
+    if (len1 < len2)
+        return -1;
+
+    return strcmp(str1, str2);
+}
+
+void my_pow(char str[], int k, int n) {
+    str[0] = '1', str[1] = '\0';
+    while (n--) {
+        my_mul(str, k);
+    }
+}
+
+int my_binary_search(int n, char str[]) {
+    int high = 1e9, low = 0;
+    int mid;
+    char tot[2005];
+
+    while (low < high) {
+        mid = low + (high-low)/2;
+        my_pow(tot, mid, n);
+        int tmp = my_numCmp(tot, str);
+        if (0 == tmp)
+            return mid;
+        if (tmp < 0)
+            low = mid + 1;
+        else
+            high = mid;
+    }
+    return mid;
+}
+
+int main() {
+    char str[105];
+    int n;
+    while (scanf("%d%s", &n, str) != EOF) {
+        printf("%d\n", my_binary_search(n, str));
+    }
+
+    return 0;
+}
+   </code>
+</pre>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Your Name</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-26T19:11:08+08:00" pubdate data-updated="true">Mar 26<span>th</span>, 2014</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://xiao597896577.github.io/blog/2014/03/26/poj-2109-power-of-cryptography/" data-via="" data-counturl="http://xiao597896577.github.io/blog/2014/03/26/poj-2109-power-of-cryptography/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/03/26/poj-1328-radar-installationon/" title="Previous Post: POJ 1328 Radar Installationon">&laquo; POJ 1328 Radar Installationon</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/26/poj-2109-power-of-cryptography/">POJ 2109 Power of Cryptography</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/26/poj-1328-radar-installationon/">POJ 1328 Radar Installationon</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/poj-2965-the-pilots-brothers-refrigerator/">POJ 2965 the Pilots Brothers' Refrigerator</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/poj-1753-flip-game/">POJ 1753 Flip Game</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/poj-1001-exponentiation/">POJ 1001-Exponentiation</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Your Name -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
