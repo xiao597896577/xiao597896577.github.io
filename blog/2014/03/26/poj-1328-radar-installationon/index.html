@@ -1,0 +1,302 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>POJ 1328 Radar Installationon - My Octopress Blog</title>
+  <meta name="author" content="Your Name">
+
+  
+  <meta name="description" content="1.原题 Description Assume the coasting is an infinite straight line. Land is in one side of coasting, sea in the other. Each small island is a point &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://xiao597896577.github.io/blog/2014/03/26/poj-1328-radar-installationon">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="header-inner">
+    <span class="first"><a href="/">My Octopress Blog</a></span>
+    <span><a href="/about">about</a></span>
+    <span><a href="http://www.github.com/">projects</a></span>
+    <span class="last"><a href="/atom.xml" title="subscribe via RSS">rss</a></span>
+  </div>
+</hgroup>
+
+</header>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">POJ 1328 Radar Installationon</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-26T15:16:20+08:00" pubdate data-updated="true">Mar 26<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2>1.原题</h2>
+
+<p><strong>Description</strong></p>
+
+<p>Assume the coasting is an infinite straight line. Land is in one side of coasting, sea in the other. Each small island is a point locating in the sea side. And any radar installation, locating on the coasting, can only cover d distance, so an island in the sea can be covered by a radius installation, if the distance between them is at most d.</p>
+
+<p>We use Cartesian coordinate system, defining the coasting is the x-axis. The sea side is above x-axis, and the land side below. Given the position of each island in the sea, and given the distance of the coverage of the radar installation, your task is to write a program to find the minimal number of radar installations to cover all the islands. Note that the position of an island is represented by its x-y coordinates.</p>
+
+<p>Figure A Sample Input of Radar Installations</p>
+
+<p><strong>Input</strong></p>
+
+<p>The input consists of several test cases. The first line of each case contains two integers n (1&lt;=n&lt;=1000) and d, where n is the number of islands in the sea and d is the distance of coverage of the radar installation. This is followed by n lines each containing two integers representing the coordinate of the position of each island. Then a blank line follows to separate the cases.</p>
+
+<p>The input is terminated by a line containing pair of zeros</p>
+
+<p><strong>Output</strong></p>
+
+<p>For each test case output one line consisting of the test case number followed by the minimal number of radar installations needed. &ldquo;-1&rdquo; installation means no solution for that case.</p>
+
+<p><strong>Sample Input</strong></p>
+
+<p>3 2<br>
+1 2<br>
+-3 1<br>
+2 1<br></p>
+
+<p>1 2<br>
+0 2</p>
+
+<p>0 0<br></p>
+
+<p><strong>Sample Output</strong></p>
+
+<p>Case 1: 2<br>
+Case 2: 1</p>
+
+<h2>2.题意</h2>
+
+<p>就是说在坐标轴上给你n个点（y >= 0），然后有半径为M的圆，且圆心都在x轴上，问你至少多少个圆可以包括所有的左边</p>
+
+<h2>3.思路</h2>
+
+<p>就是先把所有的N个点所可以对应的在x轴上的坐标区间求出来，然后再用sort将x从小到大排列，然后再从0到N-1，现设start为第一个点的y（即区间右边），然后在判断下一个点，如果下一个点的y小于start，则说明这个区间包含在前一个区间中，再将start设置成这个点的y，如果下一个点的x（区间左边）大于start，则这个区间与上一个区间没有交集，则可以将圆的个数加一，然后再将start设置成这个点的y。只是有交集的情况可以直接过滤到，因为对变量没有影响。</p>
+
+<h2>4.代码</h2>
+
+<pre>
+   <code>
+#include&lt;iostream>
+#include&lt;algorithm>
+#include&lt;cmath>
+#include&lt;cstring>
+
+using namespace std;
+
+struct island
+{
+    double x;
+    double y;
+};
+
+island is[1010];
+int islandNum = 0;
+
+int operator < (const island& a,const island& b){
+    return a.x < b.x;
+}
+
+int main(){
+
+    
+    int distance = 0;
+    int pp = 1;
+    while(cin>>islandNum>>distance && (islandNum != 0 || distance != 0)){
+        double maxNum = 0.0;
+        for (int i = 0;i < islandNum;i++){
+            cin>>is[i].x>>is[i].y;
+            maxNum = max(maxNum,is[i].y);
+        }
+        if(maxNum > distance) {
+            cout&lt;&lt;"Case "&lt;&lt;pp++&lt;&lt;": -1"&lt;&lt;endl;
+            continue;
+        }
+        for (int i = 0;i < islandNum;i++) {
+            double d = sqrt(distance * distance - is[i].y * is[i].y);
+            double temp = is[i].x;
+            is[i].x = temp - d;
+            is[i].y = temp + d;
+        }
+        sort(is,is+islandNum);
+        int circleNum = 1;
+        double start = is[0].y;
+        for (int i = 1;i < islandNum;i++) {
+            if(is[i].y < start) start = is[i].y;
+            else if(start < is[i].x) {
+                start = is[i].y;
+                circleNum++;
+            }
+        }
+        cout&lt;&lt;"Case "&lt;&lt;pp++&lt;&lt;": "&lt;&lt;circleNum&lt;&lt;endl;
+    }
+
+    return 0;
+}
+   </code>
+</pre>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Your Name</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-03-26T15:16:20+08:00" pubdate data-updated="true">Mar 26<span>th</span>, 2014</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://xiao597896577.github.io/blog/2014/03/26/poj-1328-radar-installationon/" data-via="" data-counturl="http://xiao597896577.github.io/blog/2014/03/26/poj-1328-radar-installationon/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/03/25/poj-2965-the-pilots-brothers-refrigerator/" title="Previous Post: POJ 2965 The Pilots Brothers' refrigerator">&laquo; POJ 2965 The Pilots Brothers' refrigerator</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/03/26/poj-1328-radar-installationon/">POJ 1328 Radar Installationon</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/poj-2965-the-pilots-brothers-refrigerator/">POJ 2965 the Pilots Brothers' Refrigerator</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/poj-1753-flip-game/">POJ 1753 Flip Game</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/25/poj-1001-exponentiation/">POJ 1001-Exponentiation</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/24/uva-624-cd/">UVA 624 - CD</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Your Name -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
