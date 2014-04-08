@@ -4,7 +4,7 @@
   <title><![CDATA[My Octopress Blog]]></title>
   <link href="http://xiao597896577.github.io/atom.xml" rel="self"/>
   <link href="http://xiao597896577.github.io/"/>
-  <updated>2014-03-28T00:26:19+08:00</updated>
+  <updated>2014-04-08T10:09:14+08:00</updated>
   <id>http://xiao597896577.github.io/</id>
   <author>
     <name><![CDATA[Your Name]]></name>
@@ -12,6 +12,167 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[POJ 1068 Parencodings]]></title>
+    <link href="http://xiao597896577.github.io/blog/2014/04/08/poj-1068-parencodings/"/>
+    <updated>2014-04-08T09:48:02+08:00</updated>
+    <id>http://xiao597896577.github.io/blog/2014/04/08/poj-1068-parencodings</id>
+    <content type="html"><![CDATA[<h2>1.原题</h2>
+
+<p><strong>Description</strong></p>
+
+<p>Let S = s1 s2&hellip;s2n be a well-formed string of parentheses. S can be encoded in two different ways:</p>
+
+<pre> 
+<br>1.q By an integer sequence P = p1 p2...pn where pi is the number of left parentheses before the ith right parenthesis in S (P-sequence).</br> 
+<br>2.q By an integer sequence W = w1 w2...wn where for each right parenthesis, say a in S, we associate an integer which is the number of right parentheses counting from the matched left parenthesis of a up to a. (W-sequence).</br> 
+</pre>
+
+
+<p>Following is an example of the above encodings:</p>
+
+<pre><code>S       (((()()())))
+
+P-sequence      4 5 6666
+
+W-sequence      1 1 1456
+</code></pre>
+
+<p>Write a program to convert P-sequence of a well-formed string to the W-sequence of the same string.</p>
+
+<p><strong>Input</strong></p>
+
+<p>The first line of the input contains a single integer t (1 &lt;= t &lt;= 10), the number of test cases, followed by the input data for each test case. The first line of each test case is an integer n (1 &lt;= n &lt;= 20), and the second line is the P-sequence of a well-formed string. It contains n positive integers, separated with blanks, representing the P-sequence.</p>
+
+<br>**Output**
+
+
+<p>The output file consists of exactly t lines corresponding to test cases. For each test case, the output line should contain n integers describing the W-sequence of the string corresponding to its given P-sequence.</p>
+
+<p><strong>Sample Input</strong></p>
+
+<pre>
+2
+6
+4 5 6 6 6 6
+9 
+4 6 6 6 6 8 9 9 9
+</pre>
+
+
+<p><strong>Sample Output</strong></p>
+
+<pre>
+1 1 1 4 5 6
+1 1 2 4 5 1 1 3 9
+</pre>
+
+
+<h2>2.题意</h2>
+
+<p>有两种方式</p>
+
+<pre>
+    1.找到一个右括号，然后输出他前面的左括号的数目
+    2.找到一个右括号，然后找到与它匹配的左括号，然后输出他们之间的右括号的数目（包括自己）
+</pre>
+
+
+<p>现在就是给你第一种方式的输入，然后叫你求出第二种方式的输出</p>
+
+<h2>3.思路</h2>
+
+<p>这道题是在那个训练计划中是模拟题，其实我也不懂什么是模拟了，就说说自己的思路吧，其实很简单了，就是根据第一种方式，就可以很简单的求出所对应的括号序列，然后根据得出来的括号序列，记录下括号总个数，然后将整个扫一遍，然后找到右括号，就开始进入方法，如果是还是右括号，则个数加1，如果是左括号，看之前是否有右括号，没有的话，则这个左括号与该右括号是匹配的，则可以输出个数。</p>
+
+<h2>4.代码##（Accept）</h2>
+
+<pre>
+<code>
+#include&lt;iostream>
+#include&lt;cstring>
+
+using namespace std;
+
+int num = 0;
+char list[50];
+
+void checkResult(int index){
+    int op = 1;
+    int kk = 0;
+    for (int j=index-1;j>=0;j--) {
+        if(list[j] == ')'){
+            kk++;
+            op ++;
+        }
+        else {
+            if(kk == 0) {
+                break;
+            }
+            else{
+                kk--;
+            }
+        }
+    }
+    cout << op;
+}
+
+int main(){
+
+    int testcase = 0;
+    cin>>testcase;
+    while(testcase--) {
+        cin>>num;
+        int before = 0;
+        int p = 0;
+        int index = 0;
+        memset(list,0,sizeof(list));
+        for (int i = 0; i < num;i++){
+            cin>>p;
+            if(i == 0){
+                for (;index < p-before;index++) list[index] = '(';
+            }else{
+                index++;
+                for (int j = 0;j < p-before;j++) {
+                    list[index+j] = '(';
+                    index++;
+                }
+            }
+            list[index] = ')';
+            before = p;
+        }
+        bool pp = false;
+        for (int i = 0;i <= index;i++) { 
+            if(list[i] == ')') {
+                if(pp) cout << " ";
+                else pp = true;
+                checkResult(i);
+            }
+        }
+        cout << endl;
+    }
+    return 0;
+}
+</code>
+</pre>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Head First in Design Pattern(1) Strategy]]></title>
+    <link href="http://xiao597896577.github.io/blog/2014/03/30/head-first-in-design-pattern-1-strategy/"/>
+    <updated>2014-03-30T20:45:20+08:00</updated>
+    <id>http://xiao597896577.github.io/blog/2014/03/30/head-first-in-design-pattern-1-strategy</id>
+    <content type="html"><![CDATA[<h2>1.策略模式</h2>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;策略模式就是定义了算法族，分别封装起来，让他们之间可以相互的替换，此模式让算法的变化独立于使用算法的客户。</p>
+
+<h2>2.类图</h2>
+
+<p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;说上去感觉好像可高端的样子，还是直接看类图吧，看完类图就一目了然了。</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[POJ Training Plan]]></title>

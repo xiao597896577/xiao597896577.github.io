@@ -1,0 +1,332 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>POJ 1068 Parencodings - My Octopress Blog</title>
+  <meta name="author" content="Your Name">
+
+  
+  <meta name="description" content="1.原题 Description Let S = s1 s2&hellip;s2n be a well-formed string of parentheses. S can be encoded in two different ways: 1.q By an integer sequence &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://xiao597896577.github.io/blog/2014/04/08/poj-1068-parencodings">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="header-inner">
+    <span class="first"><a href="/">My Octopress Blog</a></span>
+    <span><a href="/about">about</a></span>
+    <span><a href="http://www.github.com/">projects</a></span>
+    <span class="last"><a href="/atom.xml" title="subscribe via RSS">rss</a></span>
+  </div>
+</hgroup>
+
+</header>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">POJ 1068 Parencodings</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-08T09:48:02+08:00" pubdate data-updated="true">Apr 8<span>th</span>, 2014</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2>1.原题</h2>
+
+<p><strong>Description</strong></p>
+
+<p>Let S = s1 s2&hellip;s2n be a well-formed string of parentheses. S can be encoded in two different ways:</p>
+
+<pre> 
+<br>1.q By an integer sequence P = p1 p2...pn where pi is the number of left parentheses before the ith right parenthesis in S (P-sequence).</br> 
+<br>2.q By an integer sequence W = w1 w2...wn where for each right parenthesis, say a in S, we associate an integer which is the number of right parentheses counting from the matched left parenthesis of a up to a. (W-sequence).</br> 
+</pre>
+
+
+<p>Following is an example of the above encodings:</p>
+
+<pre><code>S       (((()()())))
+
+P-sequence      4 5 6666
+
+W-sequence      1 1 1456
+</code></pre>
+
+<p>Write a program to convert P-sequence of a well-formed string to the W-sequence of the same string.</p>
+
+<p><strong>Input</strong></p>
+
+<p>The first line of the input contains a single integer t (1 &lt;= t &lt;= 10), the number of test cases, followed by the input data for each test case. The first line of each test case is an integer n (1 &lt;= n &lt;= 20), and the second line is the P-sequence of a well-formed string. It contains n positive integers, separated with blanks, representing the P-sequence.</p>
+
+<br>**Output**
+
+
+<p>The output file consists of exactly t lines corresponding to test cases. For each test case, the output line should contain n integers describing the W-sequence of the string corresponding to its given P-sequence.</p>
+
+<p><strong>Sample Input</strong></p>
+
+<pre>
+2
+6
+4 5 6 6 6 6
+9 
+4 6 6 6 6 8 9 9 9
+</pre>
+
+
+<p><strong>Sample Output</strong></p>
+
+<pre>
+1 1 1 4 5 6
+1 1 2 4 5 1 1 3 9
+</pre>
+
+
+<h2>2.题意</h2>
+
+<p>有两种方式</p>
+
+<pre>
+    1.找到一个右括号，然后输出他前面的左括号的数目
+    2.找到一个右括号，然后找到与它匹配的左括号，然后输出他们之间的右括号的数目（包括自己）
+</pre>
+
+
+<p>现在就是给你第一种方式的输入，然后叫你求出第二种方式的输出</p>
+
+<h2>3.思路</h2>
+
+<p>这道题是在那个训练计划中是模拟题，其实我也不懂什么是模拟了，就说说自己的思路吧，其实很简单了，就是根据第一种方式，就可以很简单的求出所对应的括号序列，然后根据得出来的括号序列，记录下括号总个数，然后将整个扫一遍，然后找到右括号，就开始进入方法，如果是还是右括号，则个数加1，如果是左括号，看之前是否有右括号，没有的话，则这个左括号与该右括号是匹配的，则可以输出个数。</p>
+
+<h2>4.代码##（Accept）</h2>
+
+<pre>
+<code>
+#include&lt;iostream>
+#include&lt;cstring>
+
+using namespace std;
+
+int num = 0;
+char list[50];
+
+void checkResult(int index){
+    int op = 1;
+    int kk = 0;
+    for (int j=index-1;j>=0;j--) {
+        if(list[j] == ')'){
+            kk++;
+            op ++;
+        }
+        else {
+            if(kk == 0) {
+                break;
+            }
+            else{
+                kk--;
+            }
+        }
+    }
+    cout << op;
+}
+
+int main(){
+
+    int testcase = 0;
+    cin>>testcase;
+    while(testcase--) {
+        cin>>num;
+        int before = 0;
+        int p = 0;
+        int index = 0;
+        memset(list,0,sizeof(list));
+        for (int i = 0; i < num;i++){
+            cin>>p;
+            if(i == 0){
+                for (;index < p-before;index++) list[index] = '(';
+            }else{
+                index++;
+                for (int j = 0;j < p-before;j++) {
+                    list[index+j] = '(';
+                    index++;
+                }
+            }
+            list[index] = ')';
+            before = p;
+        }
+        bool pp = false;
+        for (int i = 0;i <= index;i++) { 
+            if(list[i] == ')') {
+                if(pp) cout << " ";
+                else pp = true;
+                checkResult(i);
+            }
+        }
+        cout << endl;
+    }
+    return 0;
+}
+</code>
+</pre>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Your Name</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2014-04-08T09:48:02+08:00" pubdate data-updated="true">Apr 8<span>th</span>, 2014</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://xiao597896577.github.io/blog/2014/04/08/poj-1068-parencodings/" data-via="" data-counturl="http://xiao597896577.github.io/blog/2014/04/08/poj-1068-parencodings/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2014/03/30/head-first-in-design-pattern-1-strategy/" title="Previous Post: Head First in Design Pattern(1) Strategy">&laquo; Head First in Design Pattern(1) Strategy</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2014/04/08/poj-1068-parencodings/">POJ 1068 Parencodings</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/30/head-first-in-design-pattern-1-strategy/">Head First in Design Pattern(1) Strategy</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/28/poj-training-plan/">POJ Training Plan</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/27/poj-3295-tautology/">POJ 3295 Tautology</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2014/03/27/poj-2586-y2k-accounting-bug/">POJ 2586 Y2K Accounting Bug</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2014 - Your Name -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
